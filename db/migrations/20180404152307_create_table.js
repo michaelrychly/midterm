@@ -11,9 +11,9 @@ exports.up = function(knex, Promise) {
     .then(function() {
       return knex.schema.createTableIfNotExists('items', function (table) {
         table.increments().primary;
-        table.string('text_from_user');
         table.integer('category_id');
         table.foreign('category_id').references('categories.id');
+        table.string('text_from_user');
         table.string('details').nullable();
     })})
     .then(function() {
