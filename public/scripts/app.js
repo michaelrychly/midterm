@@ -1,6 +1,6 @@
 (function($) {
   "use strict"; // Start of use strict
-   
+
  // Modal popup$(function () {
   $('.portfolio-item').magnificPopup({
     type: 'inline',
