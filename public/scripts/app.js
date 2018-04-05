@@ -9,7 +9,12 @@ $(document).ready(function () {
   //   focus: '#username',
   //   modal: true
   // });
-  $('#new-item-form').submit(function(e){
+  $('.portfolio-item').on('click', function (e) {
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    clearAndLoadList(this);
+  })
+  $('#new-item-form').submit(function (e) {
     e.preventDefault();
     e.stopImmediatePropagation();
     addItem(this);
@@ -51,73 +56,56 @@ function addItem(form) {
   }
 }
 
-// $(() => {
-//   $.ajax({
-//     method: "GET",
-//     url: "/api/users"
-//   }).done((users) => {
-//     for (user of users) {
-//       $("<div>").text(user.email).appendTo($("body"));
-//     }
-//   });
-// });
+const categories = ['foods', 'products', 'movies', 'books']
+const urls = ['eat', 'buy', 'watch', 'read']
+function clearAndLoadList(btn) {
+  console.log(btn)
+  let btnIntent;
+  for (let i = 0; i < categories.length; i++) {
+    if ($(btn).hasClass(categories[i])) {
+      btnIntent = urls[i];
+      break;
+    }
+  }
+  $.ajax({
+    method: "GET",
+    url: `/api/${btnIntent}`
+  }).done((items) => {
+    clearLists();
+    if (items.general) {
+      displayNoneList(items.general);
+    }
+    displayDefinedList(items.items);
+  });
+}
 
-// $(() => {
-//   $.ajax({
-//     method: "GET",
-//     url: "/api/watch"
-//   }).done((watch) => {
-//     $("<div>").text("WATCH").appendTo($("body"));
-//     for (let i = 0; i < watch.general.length; i++) {
-//       $("<div>").text(watch.general[i].text_from_user).appendTo($("body"));
-//     }
-//     for (let i = 0; i < watch.items.length; i++) {
-//       $("<div>").text(watch.items[i].text_from_user).appendTo($("body"));
-//     }
-//   });
-// });
+//Creates item being told the item info and the list it is intended for
+function createItem(item, list) {
+  let output = `<li>${item.text}</li>`
+  $(`#${list}`).prepend(output);
+}
 
-// $(() => {
-//   $.ajax({
-//     method: "GET",
-//     url: "/api/eat"
-//   }).done((eat) => {
-//     $("<div>").text("EAT").appendTo($("body"));
-//     for (let i = 0; i < eat.general.length; i++) {
-//       $("<div>").text(eat.general[i].text_from_user).appendTo($("body"));
-//     }
-//     for (let i = 0; i < eat.items.length; i++) {
-//       $("<div>").text(eat.items[i].text_from_user).appendTo($("body"));
-//     }
-//   });
-// });
+//Creates the title bar for the uncategorized list and then calls createItems for all items given, inside of the newly created list
+function renderNoneList(items) {
+  let list = 'noneList'
+  let output = `<div id="noneTitle" class="container list-title-bar"><h2>*no home found items*</h2><ul id='noneList' class="list-of-items"></ul></div>`;
+  $('#noneHolder').prepend(output);
+  tweetsArr.forEach(function (item) {
+    createItem(item, list);
+  });
+}
 
-// $(() => {
-//   $.ajax({
-//     method: "GET",
-//     url: "/api/read"
-//   }).done((read) => {
-//     $("<div>").text("READ").appendTo($("body"));
-//     for (let i = 0; i < read.general.length; i++) {
-//       $("<div>").text(read.general[i].text_from_user).appendTo($("body"));
-//     }
-//     for (let i = 0; i < read.items.length; i++) {
-//       $("<div>").text(read.items[i].text_from_user).appendTo($("body"));
-//     }
-//   });
-// });
+//Calls to create items inside of the categorized list for each item given
+function renderDefinedList(items) {
+  let list = 'catdList'
+  $('#noneHolder').prepend(output);
+  tweetsArr.forEach(function (item) {
+    createItem(item, list);
+  });
+}
 
-// $(() => {
-//   $.ajax({
-//     method: "GET",
-//     url: "/api/buy"
-//   }).done((buy) => {
-//     $("<div>").text("BUY").appendTo($("body"));
-//     for (let i = 0; i < buy.general.length; i++) {
-//       $("<div>").text(buy.general[i].text_from_user).appendTo($("body"));
-//     }
-//     for (let i = 0; i < buy.items.length; i++) {
-//       $("<div>").text(buy.items[i].text_from_user).appendTo($("body"));
-//     }
-//   });
-// });
+//clears both lists (just categorized items and for uncategorized the title bars as well)
+function clearLists() {
+  $('#noneTitle').remove();
+  $('#catdList').find('li').remove();
+}
