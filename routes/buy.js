@@ -28,7 +28,10 @@ module.exports = (knex) => {
         }
         results = {general, items};
         res.send(results);;
-    });
+      })
+      .catch(function(err){
+        console.error(err);
+      });
   });
 
   return router;

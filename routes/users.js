@@ -12,7 +12,10 @@ module.exports = (knex) => {
       .where('name', 'Bob')
       .then((results) => {
         res.json(results);
-    });
+      })
+      .catch(function(err){
+        console.error(err);
+      });
   });
 
   return router;

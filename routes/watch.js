@@ -4,7 +4,7 @@ const express = require('express');
 const router  = express.Router();
 
 module.exports = (knex) => {
-
+  //get all movies from the DB
   router.get("/", (req, res) => {
     knex
       .select('*')
@@ -28,7 +28,10 @@ module.exports = (knex) => {
         }
         results = {general, items};
         res.send(results);
-    });
+      })
+      .catch(function(err){
+        console.error(err);
+      });
   });
 
   return router;
