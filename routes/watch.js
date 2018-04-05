@@ -13,6 +13,7 @@ module.exports = (knex) => {
       .innerJoin('items', 'items.id', 'item_id')
       .where('users.id', '2')
       .whereIn('items.category_id', ['1', '5'])
+      .orderBy('state', 'desc')
       .then((watch) => {
         let results = {};
         let general = [];
