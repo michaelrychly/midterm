@@ -42,6 +42,6 @@ function getLuisIntent(utterance) {
 
 module.exports = getLuisIntent;
 // Pass an utterance to the sample LUIS app
-// getLuisIntent('the hobbit');
+// getLuisIntent('the hobbit').then();
 
 
