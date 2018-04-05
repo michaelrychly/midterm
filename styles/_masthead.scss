@@ -1,6 +1,6 @@
 header.masthead {
-  padding-top: calc(2rem + 72px);
-  padding-bottom: 1rem;
+  padding-top: calc(5rem + 72px);
+  padding-bottom: 3rem;
   h1 {
     font-size: 3rem;
     line-height: 3rem;
@@ -30,6 +30,9 @@ header.masthead {
       font-size: 25px;
       color: #FFF;
       text-decoration: none;	
+      &:hover {
+        cursor: pointer;
+      }
     }
     .blue{
       border-color: #3498DB;
@@ -46,8 +49,8 @@ header.masthead {
 }
 @media (min-width: 992px) {
   header.masthead {
-    padding-top: calc(2rem + 106px);
-    padding-bottom: 1rem;
+    padding-top: calc(5rem + 106px);
+    padding-bottom: 3rem;
     h1 {
       font-size: 4.75em;
       line-height: 4rem;

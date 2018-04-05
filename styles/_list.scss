@@ -5,6 +5,9 @@
     margin: 0em;
     border-radius: 1em;
     padding:0.25em;
+    &:hover {
+        cursor: pointer;
+    }
 
     h2 {
         color: $white;
@@ -15,9 +18,12 @@
     #list-of-items {
         margin:auto;
         background-color: $white;
+        color: $black;
+        font-size: 2em;
         border-color: $primary;
         border-style: solid;
         border-bottom-left-radius: 1em;
         border-bottom-right-radius: 1em;
+
     }
 }
