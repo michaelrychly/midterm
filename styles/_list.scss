@@ -1,0 +1,23 @@
+#list-title-bar {
+    background-color:$primary;
+    width: 100%;
+    text-align: center;
+    margin: 0em;
+    border-radius: 1em;
+    padding:0.25em;
+
+    h2 {
+        color: $white;
+        vertical-align: middle;
+        margin: auto;
+        padding:0.25em;
+    }
+    #list-of-items {
+        margin:auto;
+        background-color: $white;
+        border-color: $primary;
+        border-style: solid;
+        border-bottom-left-radius: 1em;
+        border-bottom-right-radius: 1em;
+    }
+}
