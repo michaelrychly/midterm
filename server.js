@@ -20,6 +20,7 @@ const watchRoutes = require("./routes/watch");
 const eatRoutes = require("./routes/eat");
 const readRoutes = require("./routes/read");
 const buyRoutes = require("./routes/buy");
+const itemsRoutes = require("./routes/items");
 
 // Load the logger first so all (static) HTTP requests are logged to STDOUT
 // 'dev' = Concise output colored by response status for development use.
@@ -45,6 +46,7 @@ app.use("/api/watch", watchRoutes(knex));
 app.use("/api/eat", eatRoutes(knex));
 app.use("/api/read", readRoutes(knex));
 app.use("/api/buy", buyRoutes(knex));
+app.use("/api/items", itemsRoutes(knex));
 
 // Home page
 app.get("/", (req, res) => {
