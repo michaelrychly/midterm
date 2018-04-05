@@ -3,5 +3,6 @@ public/styles
 .env
 *.log
 *.sqlite3
-items.js
+itemsTest.js
 items.module.js
+db/migrations/20180405181023_create_tables2.js
