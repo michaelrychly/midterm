@@ -47,14 +47,21 @@
         }
         .fa-minus-square-o:hover {
             color:red;
-            font-size: 125%;
+            text-decoration: underline;
         }
         .fa-check-square-o:hover {
             color:green;
-            font-size: 125%;
+            text-decoration: underline;
         }
         .fa-edit:hover {
-            font-size: 125%;
+            text-decoration: underline;
+        }
+        .fa-link {
+            color: $black;
+            content: " (external)";
+            &:hover {
+                text-decoration: underline;
+            }
         }
         .green {
             color: green;

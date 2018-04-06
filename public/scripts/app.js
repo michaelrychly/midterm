@@ -45,7 +45,10 @@ $(document).ready(function () {
           updateItemState(id);
           $('i .green').parent('li').appendTo('#catdList');
 
+        } else if ($(e.target).hasClass('fa-link')) {
+
         } else {
+          console.log(e.target);
           e.preventDefault();
           e.stopImmediatePropagation();
           slideList(this)
@@ -87,7 +90,7 @@ function login() {
     $.ajax({
       url: '/login',
       method: 'PUT',
-      data: { username: $('form').find('#username-field').val(), password: $('form').find('#username-field').val() }
+      data: { username: $('form').find('#username-field').val(), password: $('form').find('#password-field').val() }
     })
   }
 }
@@ -99,7 +102,12 @@ function register() {
     $.ajax({
       url: '/register',
       method: 'PUT',
-      data: { username: $('form').find('#username-field').val(), password: $('form').find('#username-field').val() }
+      data: { username: $('form').find('#username-field').val(), password: $('form').find('#password-field').val() },
+      success: ((res) => {
+        if (!res) {
+          alert('Unacceptable Username/Password')
+        }
+      })
     })
   }
 }
@@ -212,8 +220,24 @@ function clearAndLoadList(btn) {
 
 
 //Creates item being told the item info and the list it is intended for
-function createItem(item, list) {
-  let output = `<li id="${item.id}">${item.text_from_user}<i class="${item.state ? "green" : ""} modifyItem fa fa-check-square-o"></i><i id="item.id" class="modifyItem fa fa-edit"></i><i id="item.id" class="modifyItem fa fa-minus-square-o"></i></li>`
+var externalLinks = ['https://www.yelp.ca/search?find_desc= ', 'https://www.amazon.ca/s/ref=nb_sb_noss?url=search-alias%3Daps&field-keywords= ', 'https://www.google.ca/search?q= +showtimes+near+me&rlz=1C5CHFA_enCA785CA785&oq= +showtimes+near+me&aqs=chrome..69i57.9569j0j1&sourceid=chrome&ie=UTF-8', 'https://www.amazon.com/s/ref=nb_sb_noss?url=search-alias%3Dstripbooks&field-keywords= ','https://www.google.ca/search?q= &rlz=1C5CHFA_enCA785CA785&oq= &aqs=chrome..69i57j69i60l3j35i39j0.5456j0j7&sourceid=chrome&ie=UTF-8'];
+
+function createItem(item, list, cat) {
+  let suggestedURL;
+  if (cat === 0 || cat) {
+    console.log('text', item.text_from_user)
+    console.log('cat ', cat);
+    console.log('link before ', externalLinks[cat])
+    let str = item.text_from_user;
+    let query = str.split(' ').join('+');
+    suggestedURL = externalLinks[cat].split(' ').join(query);
+    console.log('link after ', suggestedURL);
+  } else {
+    let str = item.text_from_user;
+    let query = str.split(' ').join('+');
+    suggestedURL = externalLinks[externalLinks.length - 1].split(' ').join(query);
+  }
+  let output = `<li id="${item.id}">${item.text_from_user}<i class="${item.state ? "green" : ""} modifyItem fa fa-check-square-o"></i><i id="item.id" class="modifyItem fa fa-edit"></i><i id="item.id" class="modifyItem fa fa-minus-square-o"></i><a class="modifyItem fa fa-link" href=${suggestedURL}></a></li>`
   $(`#${list}`).prepend(output);
 }
 
@@ -228,7 +252,7 @@ function renderList(items, list, cat) {
     $('#catdHolder').prepend(output);
   }
   items.forEach(function (item) {
-    createItem(item, list);
+    createItem(item, list, cat);
   });
 }
 
