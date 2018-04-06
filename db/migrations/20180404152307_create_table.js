@@ -1,5 +1,7 @@
 exports.up = function(knex, Promise) {
-  return knex.schema.alterTable('users', function (table) {
+  return knex.schema.createTable('users', function (table) {
+      table.increments().primary;
+      table.string('name');
       table.string('email');
       table.string('password');
     })
@@ -28,17 +30,14 @@ exports.up = function(knex, Promise) {
 };
 
 exports.down = function(knex, Promise) {
-  return knex.schema.alterTable('users', function (table) {
-    table.dropColumn('email');
-    table.dropColumn('password');
-  })
-  .then(function() {
-    return knex.schema.dropTableIfExists('users_items');
-    })
+  return knex.schema.dropTableIfExists('users_items')
   .then(function() {
     return knex.schema.dropTableIfExists('items');
     })
   .then(function() {
     return knex.schema.dropTableIfExists('categories');
+  })
+  .then(function() {
+    return knex.schema.dropTableIfExists('users');
   });
 };
