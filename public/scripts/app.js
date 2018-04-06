@@ -88,7 +88,7 @@ function login() {
     alert("Cannot Login/Register with an empty item");
   } else {
     $.ajax({
-      url: '/login',
+      url: '/api/users/login',
       method: 'PUT',
       data: { username: $('form').find('#username-field').val(), password: $('form').find('#password-field').val() }
     })
@@ -100,7 +100,7 @@ function register() {
     alert("Cannot Login/Register with an empty item");
   } else {
     $.ajax({
-      url: '/register',
+      url: '/api/users/register',
       method: 'PUT',
       data: { username: $('form').find('#username-field').val(), password: $('form').find('#password-field').val() },
       success: ((res) => {
