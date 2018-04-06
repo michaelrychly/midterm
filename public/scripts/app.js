@@ -29,7 +29,7 @@ $(document).ready(function () {
   $('#new-item-form').submit(function (e) {
     e.preventDefault();
     e.stopImmediatePropagation();
-    addItem(this);
+    updateItem(this);
     return false;
   });
 
@@ -71,7 +71,7 @@ function deleteItem(form) {
     alert("Cannot send empty item");
   } else {
     $.ajax({
-      url: '/api/items/27',
+      url: '/api/items/40',
       method: 'DELETE'
     }).done(() => {
       //$(form)[0].reset();
@@ -86,7 +86,8 @@ function updateItem(form) {
     $.ajax({
       url: '/api/items/21',
       method: 'PUT',
-      data: { text_from_user: $(form).find('#item-input-field').val() }
+      data: { text_from_user: $(form).find('#item-input-field').val(),
+      state: true, category_id: 2 }
     }).done(() => {
       //$(form)[0].reset();
     }).catch(function (error) {
