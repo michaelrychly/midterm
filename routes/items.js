@@ -63,29 +63,60 @@ module.exports = (knex) => {
     //resulting state
     router.put('/:id', (req, res) => {
         //update the items table with text_from_user and category
-        if (Boolean(req.body.state) !== true && Boolean(req.body.state) !== false){
-            console.log("in if: ", req.body.state);
-            return knex('items')
-                .where({id: req.params.id})
-                .update({category_id: req.body.category_id, text_from_user: req.body.text_from_user})
-                .then(function(ok){
-                    console.log("in udpate", ok);
-                    //res.send(ok).sendStatus(200);
-                }).catch(function (e) {
-                    res.status(500).send(e);
-                })
+        if (req.body.state === undefined){
+            //check if user has changed the category, the id is 0 if he did not
+            if (Number(req.body.category_id) === 0) {
+                return knex('items')
+                    .where({id: req.params.id})
+                    .update({text_from_user: req.body.text_from_user})
+                    .then(function(){
+                        res.sendStatus(200);
+                    }).catch(function (e) {
+                        res.status(500).send(e);
+                    })
+            } else {
+                console.log("it has changed ", req.body.category_id, " and ",
+                    req.body.text_from_user);
+                return knex('items')
+                    .where({id: req.params.id})
+                    .update({category_id: req.body.category_id,
+                            text_from_user: req.body.text_from_user})
+                    .then(function(){
+                        res.sendStatus(200);
+                    }).catch(function (e) {
+                        res.status(500).send(e);
+                    })
+            }
         //update the state on users_items table
         } else {
-            console.log(req.body.state);
-            return knex('users_items')
+            //retrieve the current state
+            return knex
+                .select('*')
+                .from('users_items')
                 .where({user_id: 2, item_id: req.params.id})
-                .update({state: req.body.state})
-                .then(function(ok){
-                    console.log("in udpate", ok);
-                    //res.send(ok).sendStatus(200);
-                }).catch(function (e) {
-                    res.status(500).send(e);
+                .then(function (result){
+                    //depending on the state toggle it
+                    if (result[0].state === true) {
+                        return knex('users_items')
+                            .where({user_id: 2, item_id: req.params.id})
+                            .update({state: false})
+                            .then(function(ok){
+                                res.send(false);
+                            }).catch(function (e) {
+                                res.status(500).send(e);
+                            })
+                    } else {
+                        return knex('users_items')
+                            .where({user_id: 2, item_id: req.params.id})
+                            .update({state: true})
+                            .then(function(ok){
+                                res.send(true);
+                            }).catch(function (e) {
+                                res.status(500).send(e);
+                            })
+                    }
                 })
+
         }
     })
 
@@ -96,7 +127,7 @@ module.exports = (knex) => {
             .where({user_id: 2, item_id: req.params.id})
             .del()
             .then(function() {
-                res.sendStatus(200);
+                res.status(200).send(true);
             }).catch(function (e) {
                 res.status(500).send(e);
             })
