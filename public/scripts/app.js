@@ -27,7 +27,7 @@ $(document).ready(function () {
             updateItemText(currentTarget);
             currentTarget = null;
           });
-  
+
         } else if ($(e.target).hasClass('fa-minus-square-o')) {
           // if the delete button is the target 
           e.preventDefault();
@@ -43,7 +43,7 @@ $(document).ready(function () {
           //send request to update 'state'
           let id = $(e.target).parent('li').attr('id');
           updateItemState(id);
-          $('li .green').appendTo('#catdList');
+          $('i .green').parent('li').appendTo('#catdList');
 
         } else {
           e.preventDefault();
@@ -52,7 +52,7 @@ $(document).ready(function () {
         }
       });
     }).catch(e => {
-      console.log("error: ", e);
+      console.error("error: ", e);
     })
   })
   $('#new-item-form').submit(function (e) {
@@ -61,12 +61,46 @@ $(document).ready(function () {
     addItem(this);
     return false;
   });
-  $('.loginForm').on('submit', function (e) {
-    // if e.target hasClass register
-
-    // if e.target hasClass login
-  });
+  $('#logRegBtn').on('click', function (e) {
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    console.log('in modal')
+    $('#id01').css('display', 'block');
+    $('#id01').find('.loginForm').on('submit', function (e) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      if ($(e.target).hasClass('register')) {
+        register();
+      } else if ($(e.target).hasClass('register')) {
+        login();
+      }
+    });
+  })
 });
+
+function login() {
+  if ($('form').find('#username-field').val() === "" || $('form').find('#password-field').val() === "") {
+    alert("Cannot Login/Register with an empty item");
+  } else {
+    $.ajax({
+      url: '/login',
+      method: 'PUT',
+      data: { username: $('form').find('#username-field').val(), password: $('form').find('#username-field').val() }
+    })
+  }
+}
+
+function register() {
+  if ($('form').find('#username-field').val() === "" || $('form').find('#password-field').val() === "") {
+    alert("Cannot Login/Register with an empty item");
+  } else {
+    $.ajax({
+      url: '/register',
+      method: 'PUT',
+      data: { username: $('form').find('#username-field').val(), password: $('form').find('#username-field').val() }
+    })
+  }
+}
 
 var shown = true;
 function slideList(list) {
@@ -113,7 +147,6 @@ function deleteItem(id) {
 }
 
 function updateItemText(id) {
-  console.log('inhere')
   if ($('form').find('#item-update-field').val() === "") {
     alert("Cannot update to an empty item");
   } else {
@@ -133,7 +166,7 @@ function updateItemState(id) {
   $.ajax({
     url: `/api/items/${id}`,
     method: 'PUT',
-    data: { state: 'would you please kindly toggle the state'},
+    data: { state: 'would you please kindly toggle the state' },
     success: ((state) => {
       //toggle change font awesome color to green or off green depending on server response
       $(`li #${id}`).find('.fa-check-square-o').removeClass('green')
