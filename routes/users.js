@@ -17,9 +17,7 @@ module.exports = (knex) => {
         if(result.length === 0){
           res.send(false);
         } else{
-          let templateVars = {username: req.body.username};
-
-          res.render("/", templateVars);
+          res.send([req.body.username, true]);
         }
       })
       .catch(function(err){
@@ -32,7 +30,7 @@ module.exports = (knex) => {
     knex
       .select('*')
       .from('users')
-      .where({'name': req.body.username, 'password': req.body.password})
+      .where({'name': req.body.username})
       .then((result) => {
         //if not saved in user DB insert new user
         //otherwise redirect with the existing
@@ -42,14 +40,10 @@ module.exports = (knex) => {
               'email': req.body.username + '@gmail.com',
               'password': req.body.password})
             .then(function(){
-              let templateVars = {username: req.body.username};
-              console.log("in if", templateVars);
-              res.render("/", templateVars);
+              res.send([req.body.username, true]);
             })
         } else{
-          let templateVars = {username: req.body.username};
-          console.log("in else", templateVars);
-          res.render("/", templateVars);
+          res.send(false);
           }
       })
       .catch(function(err){
