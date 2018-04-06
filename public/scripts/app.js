@@ -15,7 +15,7 @@ $(document).ready(function () {
     clearAndLoadList(this).then(function () {
       $('html, body').animate({
         scrollTop: $("#portfolio").offset().top
-      }, 1500);
+      }, 500);
       $('.list-title-bar').off("click", slideList);
       $('.list-title-bar').click(function (e) {
         e.stopImmediatePropagation();
