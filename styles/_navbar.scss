@@ -12,6 +12,7 @@
     li.nav-item {
       a.nav-link {
         color: $white;
+        cursor: default;
         &:hover {
           color: $primary;
         }

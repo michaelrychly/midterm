@@ -1,3 +1,9 @@
+#noneTitle {
+    padding:0.25em;
+}
+#catdTitle {
+    padding:0.25em;
+}
 .list-title-bar {
     background-color:$primary;
     width: 100%;
@@ -5,8 +11,8 @@
     margin: 0em;
     margin-bottom: 1em;
     border-radius: 1em;
-    padding:0.25em;
-
+    border-width:thin;
+    
     &:hover {
         cursor: pointer;
     }
@@ -27,5 +33,25 @@
         border-bottom-left-radius: 1em;
         border-bottom-right-radius: 1em;
 
+    }
+    li {
+        text-align: left;
+        padding:0.25em 1em;
+        .modifyItem {
+         float: right;
+         margin: 8px 10px; 
+         z-index: 100;
+        }
+        .fa-minus-square-o:hover {
+            color:red;
+            font-size: 125%;
+        }
+        .fa-check-square-o:hover {
+            color:green;
+            font-size: 125%;
+        }
+        .fa-edit:hover {
+            font-size: 125%;
+        }
     }
 }

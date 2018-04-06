@@ -1,14 +1,6 @@
 "use strict"; // Start of use strict
 
 $(document).ready(function () {
-  // Modal popup$(function () {
-  // $('.portfolio-item').magnificPopup({
-  //   type: 'inline',
-  //   preloader: false,
-  //   focus: '#username',
-  //   modal: true
-  // });
-
   $('.portfolio-item').on('click', function (e) {
     e.preventDefault();
     e.stopImmediatePropagation();
@@ -18,10 +10,26 @@ $(document).ready(function () {
       }, 500);
       $('.list-title-bar').off("click", slideList);
       $('.list-title-bar').click(function (e) {
-        e.stopImmediatePropagation();
-        slideList(this)
-      }
-      );
+        if ($(e.target).hasClass('fa-edit')) {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          $('#id02').css('display', 'block');
+        } else if ($(e.target).hasClass('fa-minus-square-o')) {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          // send request to delete
+
+        } else if ($(e.target).hasClass('fa-check-square-o')) {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          //send request to update 'state'
+          editModal()
+        } else {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          slideList(this)
+        }
+      });
     }).catch(e => {
       console.log("error: ", e);
     })
@@ -32,14 +40,11 @@ $(document).ready(function () {
     addItem(this);
     return false;
   });
+  $('.loginForm').on('submit', function (e) {
+    // if e.target hasClass register
 
-  $(document).on('click', '.portfolio-modal-dismiss', function (e) {
-    e.preventDefault();
-    $.magnificPopup.close();
+    // if e.target hasClass login
   });
-
-
-
 });
 
 var shown = true;
@@ -55,6 +60,11 @@ function slideList(list) {
   }
 }
 
+function editModal(){
+  //get text from list id
+  $('#id02').find('input').attr("placeholder", "Type your answer here");
+}
+
 function addItem(form) {
   if ($(form).find('#item-input-field').val() === "") {
     alert("Cannot send empty item");
@@ -64,7 +74,7 @@ function addItem(form) {
       method: 'POST',
       data: { text_from_user: $(form).find('#item-input-field').val() }
     }).done(() => {
-      //$(form)[0].reset();
+      $(form)[0].reset();
     })
   }
 }
@@ -107,7 +117,7 @@ function clearAndLoadList(btn) {
 
 //Creates item being told the item info and the list it is intended for
 function createItem(item, list) {
-  let output = `<li>${item.text_from_user}</li>`
+  let output = `<li>${item.text_from_user}<i id="${item.id}" class="modifyItem fa fa-check-square-o"></i><i id="item.id" class="modifyItem fa fa-edit"></i><i id="item.id" class="modifyItem fa fa-minus-square-o"></i></li>`
   $(`#${list}`).prepend(output);
 }
 
