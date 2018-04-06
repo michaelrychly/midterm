@@ -47,7 +47,6 @@ app.use("/api/eat", eatRoutes(knex));
 app.use("/api/read", readRoutes(knex));
 app.use("/api/buy", buyRoutes(knex));
 app.use("/api/items", itemsRoutes(knex));
-app.use("/api/items/:id", itemsRoutes(knex));
 
 // Home page
 app.get("/", (req, res) => {

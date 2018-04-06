@@ -15,7 +15,7 @@ $(document).ready(function () {
       $('.list-title-bar').off("click", slideList);
       $('.list-title-bar').click(function (e) {
         if ($(e.target).hasClass('fa-edit')) {
-          // if the edit button is the target 
+          // if the edit button is the target
           e.preventDefault();
           e.stopImmediatePropagation();
           currentTarget = $(e.target).parent('li').attr('id');
@@ -29,7 +29,7 @@ $(document).ready(function () {
           });
 
         } else if ($(e.target).hasClass('fa-minus-square-o')) {
-          // if the delete button is the target 
+          // if the delete button is the target
           e.preventDefault();
           e.stopImmediatePropagation();
           // send request to delete
