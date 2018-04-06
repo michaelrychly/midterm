@@ -1,14 +1,10 @@
 "use strict"; // Start of use strict
+var currentTarget;
+var categories = ['foods', 'products', 'movies', 'books'];
+var urls = ['eat', 'buy', 'watch', 'read'];
+var oldList;
 
 $(document).ready(function () {
-  // Modal popup$(function () {
-  // $('.portfolio-item').magnificPopup({
-  //   type: 'inline',
-  //   preloader: false,
-  //   focus: '#username',
-  //   modal: true
-  // });
-
   $('.portfolio-item').on('click', function (e) {
     e.preventDefault();
     e.stopImmediatePropagation();
@@ -18,14 +14,48 @@ $(document).ready(function () {
       }, 500);
       $('.list-title-bar').off("click", slideList);
       $('.list-title-bar').click(function (e) {
-        e.stopImmediatePropagation();
-        slideList(this)
-      }
-      );
+        if ($(e.target).hasClass('fa-edit')) {
+          // if the edit button is the target
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          currentTarget = $(e.target).parent('li').attr('id');
+          editModal(currentTarget);
+          $('#id02').css('display', 'block');
+          $('#id02').find('form').on('submit', function (e) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            updateItemText(currentTarget);
+            currentTarget = null;
+          });
+
+        } else if ($(e.target).hasClass('fa-minus-square-o')) {
+          // if the delete button is the target
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          // send request to delete
+          let id = $(e.target).parent('li').attr('id');
+          deleteItem(id);
+
+        } else if ($(e.target).hasClass('fa-check-square-o')) {
+          // if the target was the state button
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          //send request to update 'state'
+          let id = $(e.target).parent('li').attr('id');
+          updateItemState(id);
+          $('i .green').parent('li').appendTo('#catdList');
+
+        } else {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          slideList(this)
+        }
+      });
     }).catch(e => {
-      console.log("error: ", e);
+      console.error("error: ", e);
     })
-  })
+  });
+
   $('#new-item-form').submit(function (e) {
     e.preventDefault();
     e.stopImmediatePropagation();
@@ -33,11 +63,46 @@ $(document).ready(function () {
     return false;
   });
 
-  $(document).on('click', '.portfolio-modal-dismiss', function (e) {
+  $('#logRegBtn').on('click', function (e) {
     e.preventDefault();
-    $.magnificPopup.close();
-  });
+    e.stopImmediatePropagation();
+    $('#id01').css('display', 'block');
+    $('#id01').find('form').on('submit', function (e) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      console.log(e.target);
+      if ($(e.target).find('button').hasClass('register')) {
+        register();
+      } else if ($(e.target).find('button').hasClass('register')) {
+        login();
+      }
+    });
+  })
 });
+
+function login() {
+  if ($('form').find('#username-field').val() === "" || $('form').find('#password-field').val() === "") {
+    alert("Cannot Login/Register with an empty item");
+  } else {
+    $.ajax({
+      url: '/login',
+      method: 'PUT',
+      data: { username: $('form').find('#username-field').val(), password: $('form').find('#username-field').val() }
+    })
+  }
+}
+
+function register() {
+  if ($('form').find('#username-field').val() === "" || $('form').find('#password-field').val() === "") {
+    alert("Cannot Login/Register with an empty item");
+  } else {
+    $.ajax({
+      url: '/register',
+      method: 'PUT',
+      data: { username: $('form').find('#username-field').val(), password: $('form').find('#username-field').val() }
+    })
+  }
+}
 
 var shown = true;
 function slideList(list) {
@@ -52,6 +117,12 @@ function slideList(list) {
   }
 }
 
+function editModal(id) {
+  //get text from list id for placeholder in form
+  let placeHolder = $(`#${id}`).text();
+  $('#id02').find('input').attr("placeholder", `${placeHolder}`);
+}
+
 function addItem(form) {
   if ($(form).find('#item-input-field').val() === "") {
     alert("Cannot send empty item");
@@ -61,44 +132,52 @@ function addItem(form) {
       method: 'POST',
       data: { text_from_user: $(form).find('#item-input-field').val() }
     }).done(() => {
-      //$(form)[0].reset();
+      $(form)[0].reset();
     })
   }
 }
 
-function deleteItem(form) {
-  if ($(form).find('#item-input-field').val() === "") {
-    alert("Cannot send empty item");
-  } else {
-    $.ajax({
-      url: '/api/items/40',
-      method: 'DELETE'
-    }).done(() => {
-      //$(form)[0].reset();
-    })
-  }
+function deleteItem(id) {
+  $.ajax({
+    url: `/api/items/${id}`,
+    method: 'DELETE'
+  }).done(() => {
+    $(`li #${id}`).remove();
+  }).catch(function (error) {
+    console.error(error);
+  })
 }
 
-function updateItem(form) {
-  if ($(form).find('#item-input-field').val() === "") {
-    alert("Cannot send empty item");
+function updateItemText(id) {
+  if ($('form').find('#item-update-field').val() === "") {
+    alert("Cannot update to an empty item");
   } else {
     $.ajax({
-      url: '/api/items/21',
+      url: `/api/items/${id}`,
       method: 'PUT',
-      data: { text_from_user: $(form).find('#item-input-field').val(),
-      state: true, category_id: 2 }
+      data: { text_from_user: $('form').find('#item-update-field').val(), category_id: $('form').find('#catDropDown').val() }
     }).done(() => {
-      //$(form)[0].reset();
+      $('form')[0].reset();
+      $('#id02').css('display', 'none');
     }).catch(function (error) {
       console.error(error);
     })
   }
 }
-
-var categories = ['foods', 'products', 'movies', 'books'];
-var urls = ['eat', 'buy', 'watch', 'read'];
-var oldList;
+function updateItemState(id) {
+  $.ajax({
+    url: `/api/items/${id}`,
+    method: 'PUT',
+    data: { state: 'would you please kindly toggle the state' },
+    success: ((state) => {
+      //toggle change font awesome color to green or off green depending on server response
+      $(`li #${id}`).find('.fa-check-square-o').removeClass('green')
+      if (state) {
+        $(`li #${id}`).find('.fa-check-square-o').addClass('green')
+      }
+    })
+  })
+}
 
 function clearAndLoadList(btn) {
   return new Promise(function (resolve, reject) {
@@ -134,7 +213,7 @@ function clearAndLoadList(btn) {
 
 //Creates item being told the item info and the list it is intended for
 function createItem(item, list) {
-  let output = `<li>${item.text_from_user}</li>`
+  let output = `<li id="${item.id}">${item.text_from_user}<i class="${item.state ? "green" : ""} modifyItem fa fa-check-square-o"></i><i id="item.id" class="modifyItem fa fa-edit"></i><i id="item.id" class="modifyItem fa fa-minus-square-o"></i></li>`
   $(`#${list}`).prepend(output);
 }
 

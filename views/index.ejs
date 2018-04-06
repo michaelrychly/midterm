@@ -35,18 +35,14 @@
   <nav class="navbar navbar-expand-lg bg-secondary fixed-top text-uppercase" id="mainNav">
     <div class="container">
       <a class="navbar-brand js-scroll-trigger" href="#page-top">ToDo? Tada!</a>
-      <!-- <button class="navbar-toggler navbar-toggler-right text-uppercase bg-primary text-white rounded" type="button" data-toggle="collapse"
-        data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
-        Menu
-        <i class="fa fa-bars"></i>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarResponsive"> -->
       <ul class="navbar-nav ml-auto">
+          <!-- <li class="nav-item mx-0 mx-lg-1">
+              <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#portfolio">Lists</a>
+            </li> -->
         <li class="nav-item mx-0 mx-lg-1">
-          <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#portfolio">Lists</a>
+          <a id="logRegBtn" class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger">Login/Register</a>
         </li>
       </ul>
-      <!-- </div> -->
     </div>
   </nav>
 
@@ -54,7 +50,7 @@
   <header class="masthead bg-primary text-white text-center">
     <div class="container">
       <h1 class="text-uppercase mb-0">Add To A List</h1>
-      <hr class="star-light">
+    </br>
       <form id="new-item-form">
         <textarea id="item-input-field" name="text" placeholder="What would you like to add?"></textarea>
         </br>
@@ -67,10 +63,10 @@
   <section class="portfolio" id="portfolio">
     <div class="container">
       <h2 class="text-center text-uppercase text-secondary mb-0">Lists</h2>
-      <hr class="star-dark mb-5">
+    </br>
       <div class="row">
         <div class="col-sm col-sm">
-          <a class="portfolio-item d-block mx-auto foods" href="#portfolio-modal-1">
+          <a class="portfolio-item d-block mx-auto foods">
             <div class="portfolio-item-caption d-flex position-absolute h-100 w-100">
               <div class="portfolio-item-caption-content my-auto w-100 text-center text-white">
               </div>
@@ -79,7 +75,7 @@
           </a>
         </div>
         <div class="col-sm col-sm">
-          <a class="portfolio-item d-block mx-auto products" href="#portfolio-modal-1">
+          <a class="portfolio-item d-block mx-auto products">
             <div class="portfolio-item-caption d-flex position-absolute h-100 w-100">
               <div class="portfolio-item-caption-content my-auto w-100 text-center text-white">
               </div>
@@ -88,7 +84,7 @@
           </a>
         </div>
         <div class="col-sm col-sm">
-          <a class="portfolio-item d-block mx-auto movies" href="#portfolio-modal-1">
+          <a class="portfolio-item d-block mx-auto movies">
             <div class="portfolio-item-caption d-flex position-absolute h-100 w-100">
               <div class="portfolio-item-caption-content my-auto w-100 text-center text-white">
               </div>
@@ -97,7 +93,7 @@
           </a>
         </div>
         <div class="col-sm col-sm">
-          <a class="portfolio-item d-block mx-auto books" href="#portfolio-modal-1">
+          <a class="portfolio-item d-block mx-auto books">
             <div class="portfolio-item-caption d-flex position-absolute h-100 w-100">
               <div class="portfolio-item-caption-content my-auto w-100 text-center text-white">
               </div>
@@ -141,28 +137,54 @@
     </a>
   </div>
 
-  <!-- Portfolio Modals -->
-
-  <!-- Portfolio Modal 1 -->
-  <div class="portfolio-modal mfp-hide" id="portfolio-modal-1">
-    <div class="portfolio-modal-dialog bg-white">
-      <a class="close-button d-none d-md-block portfolio-modal-dismiss" href="#">
-        <i class="fa fa-3x fa-times"></i>
-      </a>
-      <div class="container text-center">
-        <div class="row">
-          <div class="col-lg-8 mx-auto">
-            <h2 class="text-secondary text-uppercase mb-0">test</h2>
-            <hr class="star-dark mb-5">
-            <p class="mb-5">Edit options go here, or login etc, attached to different button</p>
-            <a class="btn btn-primary btn-lg rounded-pill portfolio-modal-dismiss" href="#">
-              <i class="fa fa-close"></i>
-              Close Project</a>
-          </div>
+  <div id="id01" class="modal">
+      <form class="modal-content animate loginForm">
+        <div class="imgcontainer">
+          <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
+          <img src="../img/img_avatar2.jpg" alt="Avatar" class="avatar">
         </div>
-      </div>
+        <div class="container">
+          <label for="uname"><b>Username</b></label>
+          <input id="username-field" type="text" placeholder="Enter Username" name="uname">
+    
+          <label for="psw"><b>Password</b></label>
+          <input id="password-field" type="text" placeholder="Enter Password" name="psw">
+        </div>
+    
+        <div class="container" style="background-color:#f1f1f1">
+            <button class="modalbtn login" type="submit">Login</button>
+            <button class="modalbtn register" type="submit">Register</button>  
+        </br>
+            <button type="button" onclick="document.getElementById('id01').style.display='none'" class="modalbtn cancelbtn">Cancel</button>
+        </div>
+        
+      </form>
     </div>
-  </div>
+
+    <div id="id02" class="modal">
+        <form class="modal-content-edit animate updateForm">
+          <div class="imgcontainer">
+            <span onclick="document.getElementById('id02').style.display='none'" class="close" title="Close Modal">&times;</span>
+            <i class="fa fa-edit modalEdit"></i>
+          </div>
+          <div class="container">
+            <label for="uname"><b>Change Item</b></label>
+            <input id="item-update-field" type="text" placeholder="" name="updatedItemText">
+            <label for="select"><b>Change Category: </b></label>
+            <select id="catDropDown">
+                <option value="0"></option>
+                <option value="1">foods</option>
+                <option value="2">products</option>
+                <option value="3">movies</option>
+                <option value="4">books</option>
+              </select>
+          </div>
+          <div class="container" style="background-color:#f1f1f1">
+              <button class="modalbtn" type="submit">Submit</button> 
+              <button type="button" onclick="document.getElementById('id02').style.display='none'" class="modalbtn cancelbtn">Cancel</button>
+          </div>
+        </form>
+      </div>
 
   <!-- Bootstrap core JavaScript -->
   <script src="vendor/jquery/jquery.min.js"></script>
