@@ -24,7 +24,7 @@ module.exports = (knex) => {
                 
                 return knex('items')
                     //.insert([{category_id: 1}, {text_from_user: req.body.text_from_user}])
-                    .insert([{ id: 26, category_id: incoming_category_ID, text_from_user: req.body.text_from_user }])
+                    .insert([{ category_id: incoming_category_ID, text_from_user: req.body.text_from_user }])
                     .then(function(){
                         console.log('past insert');
                         res.status(200).send(200);
