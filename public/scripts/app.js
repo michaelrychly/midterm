@@ -8,15 +8,19 @@ $(document).ready(function () {
   //   focus: '#username',
   //   modal: true
   // });
-  
+
   $('.portfolio-item').on('click', function (e) {
     e.preventDefault();
     e.stopImmediatePropagation();
     clearAndLoadList(this).then(function () {
+      $('html, body').animate({
+        scrollTop: $("#portfolio").offset().top
+      }, 1500);
       $('.list-title-bar').off("click", slideList);
       $('.list-title-bar').click(function (e) {
         e.stopImmediatePropagation();
-        slideList(this)}
+        slideList(this)
+      }
       );
     }).catch(e => {
       console.log("error: ", e);
@@ -36,12 +40,12 @@ $(document).ready(function () {
 
 
 
-}); 
+});
 
 var shown = true;
 function slideList(list) {
   $(list).children('ul').slideToggle("slow")
-  if ($('#noneTitle').length > 0){
+  if ($('#noneTitle').length > 0) {
     $('#noneTitle').css('display', '');
   }
   if (shown === true) {
@@ -92,7 +96,7 @@ function clearAndLoadList(btn) {
         clearCatLists();
         renderList(items.items, 'catdList', index);
         return resolve('success');
-        if (!items){
+        if (!items) {
           return reject()
         }
       })
