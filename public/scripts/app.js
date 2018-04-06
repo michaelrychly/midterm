@@ -79,6 +79,35 @@ function addItem(form) {
   }
 }
 
+function deleteItem(form) {
+  if ($(form).find('#item-input-field').val() === "") {
+    alert("Cannot send empty item");
+  } else {
+    $.ajax({
+      url: '/api/items/27',
+      method: 'DELETE'
+    }).done(() => {
+      //$(form)[0].reset();
+    })
+  }
+}
+
+function updateItem(form) {
+  if ($(form).find('#item-input-field').val() === "") {
+    alert("Cannot send empty item");
+  } else {
+    $.ajax({
+      url: '/api/items/21',
+      method: 'PUT',
+      data: { text_from_user: $(form).find('#item-input-field').val() }
+    }).done(() => {
+      //$(form)[0].reset();
+    }).catch(function (error) {
+      console.error(error);
+    })
+  }
+}
+
 var categories = ['foods', 'products', 'movies', 'books'];
 var urls = ['eat', 'buy', 'watch', 'read'];
 var oldList;
