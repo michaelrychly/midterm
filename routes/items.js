@@ -21,7 +21,7 @@ module.exports = (knex) => {
                 let topIntent = data.intents[0].intent;
                 let incoming_category_ID = categories.indexOf(topIntent) + 1;
                 console.log('in promise')
-                
+
                 return knex('items')
                     //.insert([{category_id: 1}, {text_from_user: req.body.text_from_user}])
                     .insert([{ id: 26, category_id: incoming_category_ID, text_from_user: req.body.text_from_user }])
@@ -35,6 +35,7 @@ module.exports = (knex) => {
                 console.error(e);
             })
     })
+
     return router;
 };
 
