@@ -138,7 +138,7 @@
   </div>
 
   <div id="id01" class="modal">
-      <form class="modal-content animate loginForm" method="POST" action="/login?_method=PUT">
+      <form class="modal-content animate loginForm">
         <div class="imgcontainer">
           <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
           <img src="../img/img_avatar2.png" alt="Avatar" class="avatar">
@@ -162,19 +162,25 @@
     </div>
 
     <div id="id02" class="modal">
-        <form class="modal-content-edit animate updateForm" action="/action_page.php">
+        <form class="modal-content-edit animate updateForm">
           <div class="imgcontainer">
             <span onclick="document.getElementById('id02').style.display='none'" class="close" title="Close Modal">&times;</span>
             <i class="fa fa-edit modalEdit"></i>
           </div>
           <div class="container">
             <label for="uname"><b>Change Item</b></label>
-            <input type="text" placeholder="" name="updatedItemText">
+            <input id="item-update-field" type="text" placeholder="" name="updatedItemText">
+            <label for="select"><b>Change Category: </b></label>
+            <select id="catDropDown">
+                <option value="0"></option>
+                <option value="1">foods</option>
+                <option value="2">products</option>
+                <option value="3">movies</option>
+                <option value="4">books</option>
+              </select>
           </div>
-      
           <div class="container" style="background-color:#f1f1f1">
               <button class="modalbtn" type="submit">Submit</button> 
-          </br>
               <button type="button" onclick="document.getElementById('id02').style.display='none'" class="modalbtn cancelbtn">Cancel</button>
           </div>
           

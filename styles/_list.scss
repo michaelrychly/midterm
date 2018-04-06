@@ -42,6 +42,9 @@
          margin: 8px 10px; 
          z-index: 100;
         }
+        .fa {
+            display: inline;
+        }
         .fa-minus-square-o:hover {
             color:red;
             font-size: 125%;
@@ -52,6 +55,9 @@
         }
         .fa-edit:hover {
             font-size: 125%;
+        }
+        .green {
+            color: green;
         }
     }
 }
