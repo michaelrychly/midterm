@@ -36,6 +36,27 @@ module.exports = (knex) => {
             })
     })
 
+    router.put('/:id', (req, res) => {
+        return knex('items')
+            .where({id: req.params.id})
+            .update({text_from_user: req.body.text_from_user})
+            .then(function(){
+                res.status(200).send(200);
+            }).catch(function (e) {
+                res.status(500).send(e);
+            })
+    })
+
+    router.delete('/:id', (req, res) => {
+        return knex('items')
+            .where({id: req.params.id})
+            .del()
+            .then(function(){
+                res.status(200).send(200);
+            }).catch(function (e) {
+                res.status(500).send(e);
+            })
+    })
     return router;
 };
 
