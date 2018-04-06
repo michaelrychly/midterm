@@ -54,24 +54,26 @@ $(document).ready(function () {
     }).catch(e => {
       console.error("error: ", e);
     })
-  })
+  });
+
   $('#new-item-form').submit(function (e) {
     e.preventDefault();
     e.stopImmediatePropagation();
     addItem(this);
     return false;
   });
+
   $('#logRegBtn').on('click', function (e) {
     e.preventDefault();
     e.stopImmediatePropagation();
-    console.log('in modal')
     $('#id01').css('display', 'block');
-    $('#id01').find('.loginForm').on('submit', function (e) {
+    $('#id01').find('form').on('submit', function (e) {
       e.preventDefault();
       e.stopImmediatePropagation();
-      if ($(e.target).hasClass('register')) {
+      console.log(e.target);
+      if ($(e.target).find('button').hasClass('register')) {
         register();
-      } else if ($(e.target).hasClass('register')) {
+      } else if ($(e.target).find('button').hasClass('register')) {
         login();
       }
     });
