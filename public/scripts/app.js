@@ -59,7 +59,7 @@ $(document).ready(function () {
   $('#new-item-form').submit(function (e) {
     e.preventDefault();
     e.stopImmediatePropagation();
-    updateItem(this);
+    addItem(this);
     return false;
   });
 
