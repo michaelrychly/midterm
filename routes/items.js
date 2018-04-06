@@ -20,18 +20,24 @@ module.exports = (knex) => {
                 let topScore = data.intents[0].score;
                 let topIntent = data.intents[0].intent;
                 let incoming_category_ID = categories.indexOf(topIntent) + 1;
+                //let incoming_category_ID = 2;
                 console.log('in promise')
-
-                return knex('items')
-                    //.insert([{category_id: 1}, {text_from_user: req.body.text_from_user}])
-                    .insert([{ category_id: incoming_category_ID, text_from_user: req.body.text_from_user }])
-                    .then(function(){
-                        console.log('past insert');
-                        res.status(200).send(200);
-                    }).catch(function (e) {
+                return knex.insert([{ category_id: incoming_category_ID, text_from_user: req.body.text_from_user }], 'id').into('items')
+                    .then(function(newID){
+                        console.log('past insert', newID[0]);
+                        return knex.insert([{user_id: 2, item_id: newID[0], state: false, date_created: '2018-04-05 18:20:18.387836-04'}]).into("users_items")
+                            .then(function(){
+                                console.log('insert into users_items');
+                                    res.sendStatus(200);
+                                }).catch(function (e) {
+                                    res.status(500).send(e);
+                                })
+                            })
+                    .catch(function (e) {
                         res.status(500).send(e);
                     })
-            }).catch(function (e) {
+            })
+            .catch(function (e) {
                 console.error(e);
             })
     })
