@@ -26,7 +26,7 @@ module.exports = (knex) => {
             items.push(eat[i]);
           }
         }
-        results = {general: general, items: items};
+        results = {general, items};
         res.send(results);
       })
       .catch(function(err){

@@ -12,9 +12,9 @@
       transition: all ease 0.5s;
       opacity: 0;
       background-color: fade-out($primary, .1);
-      &:hover {
-        opacity: 1;
-      }
+      // &:hover {
+      //   opacity: 1;
+      // }
       .portfolio-item-caption-content {
         font-size: 1.5rem;
       }
