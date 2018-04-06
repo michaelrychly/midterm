@@ -29,7 +29,7 @@ $(document).ready(function () {
   $('#new-item-form').submit(function (e) {
     e.preventDefault();
     e.stopImmediatePropagation();
-    deleteItem(this);
+    addItem(this);
     return false;
   });
 
