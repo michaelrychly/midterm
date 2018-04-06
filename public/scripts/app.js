@@ -92,6 +92,22 @@ function deleteItem(form) {
   }
 }
 
+<<<<<<< HEAD
+=======
+function deleteItem(form) {
+  if ($(form).find('#item-input-field').val() === "") {
+    alert("Cannot send empty item");
+  } else {
+    $.ajax({
+      url: '/api/items/27',
+      method: 'DELETE'
+    }).done(() => {
+      //$(form)[0].reset();
+    })
+  }
+}
+
+>>>>>>> fcc709514bbc6abd4bcd794f26d81219efbc1137
 function updateItem(form) {
   if ($(form).find('#item-input-field').val() === "") {
     alert("Cannot send empty item");
