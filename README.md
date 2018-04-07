@@ -6,14 +6,6 @@ Our smart todo list is built on express server that handles requests and communi
 ### Prerequisites
 
 All prerequisite software except Node.js is included in the package.json provided. Simply 'npm install' before attempting to run the program.
-- body-parser               - knex
-- bootstrap                 - knex-logger
-- cookie-session            - morgan
-- dotenv                    - node-sass-middleware
-- ejs                       - pg
-- express                   - querystring
-- imdb-api                  - request
-- nodemon
 
 ### Getting 
 
