@@ -1,7 +1,5 @@
 "use strict"; // Start of use strict
 var currentTarget;
-var categories = ['foods', 'products', 'movies', 'books'];
-var urls = ['eat', 'buy', 'watch', 'read'];
 var oldList;
 
 $(document).ready(function (e) {
@@ -46,7 +44,14 @@ $(document).ready(function (e) {
           $('i .green').parent('li').appendTo('#catdList');
 
         } else if ($(e.target).hasClass('fa-link')) {
-
+          e.stopImmediatePropagation();
+  
+        } else if (e.target.tagName == 'LI') {
+          console.log($(e.target).attr('id'))
+          console.log($(e.target).attr('class'))
+          let id = $(e.target).attr('id');
+          // let targetClass = $(e.target).attr('class');
+          loadDetails(id); // targetClass);
         } else {
           e.preventDefault();
           e.stopImmediatePropagation();
@@ -89,6 +94,12 @@ $(document).ready(function (e) {
     });
   })
 });
+
+var categories = ['foods', 'products', 'movies', 'books'];
+var urls = ['eat', 'buy', 'watch', 'read'];
+function loadDetails (id, cat) {
+
+}
 
 function login() {
   return new Promise(function (resolve, reject) {
@@ -301,7 +312,7 @@ function createItem(item, list, cat) {
     let query = str.split(' ').join('+');
     suggestedURL = externalLinks[externalLinks.length - 1].split(' ').join(query);
   }
-  let output = `<li id="${item.id}">${item.text_from_user}<i class="${item.state ? "green" : ""} modifyItem fa fa-check-square-o"></i><i id="item.id" class="modifyItem fa fa-edit"></i><i id="item.id" class="modifyItem fa fa-minus-square-o"></i><a class="modifyItem fa fa-link" href=${suggestedURL} target="_blank"></a></li>`
+  let output = `<li id="${item.id}" class="${cat}">${item.text_from_user}<i class="${item.state ? "green" : ""} modifyItem fa fa-check-square-o"></i><i id="item.id" class="modifyItem fa fa-edit"></i><i id="item.id" class="modifyItem fa fa-minus-square-o"></i><a class="modifyItem fa fa-link" href=${suggestedURL} target="_blank"></a></li>`
   $(`#${list}`).prepend(output);
 }
 
