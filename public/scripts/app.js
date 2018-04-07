@@ -4,7 +4,7 @@ var categories = ['foods', 'products', 'movies', 'books'];
 var urls = ['eat', 'buy', 'watch', 'read'];
 var oldList;
 
-$(document).ready(function () {
+$(document).ready(function (e) {
   $('.portfolio-item').on('click', function (e) {
     e.preventDefault();
     e.stopImmediatePropagation();
@@ -48,7 +48,6 @@ $(document).ready(function () {
         } else if ($(e.target).hasClass('fa-link')) {
 
         } else {
-          console.log(e.target);
           e.preventDefault();
           e.stopImmediatePropagation();
           slideList(this)
@@ -70,15 +69,15 @@ $(document).ready(function () {
     e.preventDefault();
     e.stopImmediatePropagation();
     $('#id01').css('display', 'block');
-    $('#id01').find('form').on('submit', function (e) {
+    $('#id01').find('button.register').on('click', function (e) {
       e.preventDefault();
       e.stopImmediatePropagation();
-      console.log(e.target);
-      if ($(e.target).find('button').hasClass('register')) {
-        register();
-      } else if ($(e.target).find('button').hasClass('register')) {
-        login();
-      }
+      register();
+    });
+    $('#id01').find('button.login').on('click', function (e) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      login();
     });
   })
 });
@@ -90,7 +89,15 @@ function login() {
     $.ajax({
       url: '/login',
       method: 'PUT',
-      data: { username: $('form').find('#username-field').val(), password: $('form').find('#password-field').val() }
+      data: { username: $('form').find('#username-field').val(), password: $('form').find('#password-field').val() },
+      success: ((res) => {
+        if (!res[1]) {
+          alert('Unacceptable Username/Password')
+        } else {
+          // location = location;
+          loadNavBar(res[0]);
+        }
+      })
     })
   }
 }
@@ -104,11 +111,34 @@ function register() {
       method: 'PUT',
       data: { username: $('form').find('#username-field').val(), password: $('form').find('#password-field').val() },
       success: ((res) => {
-        if (!res) {
+        if (!res[1]) {
           alert('Unacceptable Username/Password')
+        } else {
+          //location = location;
+          loadNavBar(res[0]);
+
         }
       })
     })
+  }
+}
+
+function removeNavBar() {
+  $('nav').find('ul').remove('li')
+}
+function loadNavBar(username) {
+  if (username) {
+    let output = `<li class="nav-item mx-0 mx-lg-1">
+          <a id="username" class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger">${username}</a>
+        </li>` `<li class="nav-item mx-0 mx-lg-1">
+        <a id="logoutBtn" class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger">Logout</a>
+      </li>`;
+    $('nav').find('ul').append(output)
+  } else {
+    let output = `<li class="nav-item mx-0 mx-lg-1">
+          <a id="logRegBtn" class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger">Login/Register</a>
+        </li>`;
+    $('nav').find('ul').append(output)
   }
 }
 
@@ -150,22 +180,43 @@ function deleteItem(id) {
     url: `/api/items/${id}`,
     method: 'DELETE'
   }).done(() => {
-    $(`li #${id}`).remove();
+    $(`li#${id}`).remove();
   }).catch(function (error) {
     console.error(error);
   })
 }
 
 function updateItemText(id) {
+  console.log(id);
+  let output = $('form').find('#item-update-field').val();
   if ($('form').find('#item-update-field').val() === "") {
-    alert("Cannot update to an empty item");
+    output = $('#id02').find('input').attr("placeholder");
+  }
+
+  if ($('form').find('#item-update-field').val() === "" && $('form').find('#catDropDown').val() == 0) {
+    alert("Cannot update item with no new info");
   } else {
+    console.log('form val: ', $('form').find('#item-update-field').val())
+    console.log('should be expected new text: ', output);
+    console.log($('form').find('#catDropDown').val())
     $.ajax({
       url: `/api/items/${id}`,
       method: 'PUT',
-      data: { text_from_user: $('form').find('#item-update-field').val(), category_id: $('form').find('#catDropDown').val() }
+      data: { text_from_user: output, category_id: $('form').find('#catDropDown').val() ? $('form').find('#catDropDown').val() : 0 }
     }).done(() => {
-      $('form')[0].reset();
+      if ($('form').find('#item-update-field').val() === "") {
+        console.log('in empty text')
+        $(`li#${id}`).remove();
+      } else if ($('form').find('#catDropDown').val() == 0) {
+        console.log('output: ', output)
+        $(`li#${id}`).text(output)
+      } else {
+        console.log('in else')
+        $(`li#${id}`).val($('form').find('#item-update-field').val())
+        $(`li#${id}`).remove();
+      }
+      $('form').find('#item-update-field').val('');
+      $('form').find('#catDropDown').prop('selectedIndex', 0);
       $('#id02').css('display', 'none');
     }).catch(function (error) {
       console.error(error);
@@ -178,10 +229,13 @@ function updateItemState(id) {
     method: 'PUT',
     data: { state: 'would you please kindly toggle the state' },
     success: ((state) => {
+      console.log('in success')
       //toggle change font awesome color to green or off green depending on server response
-      $(`li #${id}`).find('.fa-check-square-o').removeClass('green')
+      console.log(id)
+      console.log($(`li#${id}`))
+      $(`li#${id}`).find('.fa-check-square-o').removeClass('green')
       if (state) {
-        $(`li #${id}`).find('.fa-check-square-o').addClass('green')
+        $(`li#${id}`).find('.fa-check-square-o').addClass('green')
       }
     })
   })
@@ -220,18 +274,14 @@ function clearAndLoadList(btn) {
 
 
 //Creates item being told the item info and the list it is intended for
-var externalLinks = ['https://www.yelp.ca/search?find_desc= ', 'https://www.amazon.ca/s/ref=nb_sb_noss?url=search-alias%3Daps&field-keywords= ', 'https://www.google.ca/search?q= +showtimes+near+me&rlz=1C5CHFA_enCA785CA785&oq= +showtimes+near+me&aqs=chrome..69i57.9569j0j1&sourceid=chrome&ie=UTF-8', 'https://www.amazon.com/s/ref=nb_sb_noss?url=search-alias%3Dstripbooks&field-keywords= ','https://www.google.ca/search?q= &rlz=1C5CHFA_enCA785CA785&oq= &aqs=chrome..69i57j69i60l3j35i39j0.5456j0j7&sourceid=chrome&ie=UTF-8'];
+var externalLinks = ['https://www.yelp.ca/search?find_desc= ', 'https://www.amazon.ca/s/ref=nb_sb_noss?url=search-alias%3Daps&field-keywords= ', 'https://www.google.ca/search?q= +showtimes+near+me&rlz=1C5CHFA_enCA785CA785&oq= +showtimes+near+me&aqs=chrome..69i57.9569j0j1&sourceid=chrome&ie=UTF-8', 'https://www.amazon.com/s/ref=nb_sb_noss?url=search-alias%3Dstripbooks&field-keywords= ', 'https://www.google.ca/search?q= &rlz=1C5CHFA_enCA785CA785&oq= &aqs=chrome..69i57j69i60l3j35i39j0.5456j0j7&sourceid=chrome&ie=UTF-8'];
 
 function createItem(item, list, cat) {
   let suggestedURL;
   if (cat === 0 || cat) {
-    console.log('text', item.text_from_user)
-    console.log('cat ', cat);
-    console.log('link before ', externalLinks[cat])
     let str = item.text_from_user;
     let query = str.split(' ').join('+');
     suggestedURL = externalLinks[cat].split(' ').join(query);
-    console.log('link after ', suggestedURL);
   } else {
     let str = item.text_from_user;
     let query = str.split(' ').join('+');
