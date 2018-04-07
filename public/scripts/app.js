@@ -45,13 +45,13 @@ $(document).ready(function (e) {
 
         } else if ($(e.target).hasClass('fa-link')) {
           e.stopImmediatePropagation();
-  
+
         } else if (e.target.tagName == 'LI') {
-          console.log($(e.target).attr('id'))
-          console.log($(e.target).attr('class'))
           let id = $(e.target).attr('id');
-          // let targetClass = $(e.target).attr('class');
-          loadDetails(id); // targetClass);
+          let targetClass = $(e.target).attr('class');
+          if (targetClass == 2) {
+            loadDetails(id); // targetClass);
+          }
         } else {
           e.preventDefault();
           e.stopImmediatePropagation();
@@ -97,9 +97,39 @@ $(document).ready(function (e) {
 
 var categories = ['foods', 'products', 'movies', 'books'];
 var urls = ['eat', 'buy', 'watch', 'read'];
-function loadDetails (id, cat) {
 
+function loadDetails(id) {
+  $.ajax({
+    url: `/api/items/${id}/details`,
+    method: 'GET',
+    success: ((res) => {
+      loadMovieModal(res);
+    })
+  })
 }
+
+function loadMovieModal(data) {
+  let output = `<form class="modal-content-movie animate updateForm">
+  <div class="imgcontainer">
+    <span onclick="document.getElementById('movieModal').style.display='none'" class="close" title="Close Modal">&times;</span>
+    <img src=${data.poster} alt="Poster" class="poster">
+  </div>
+  <div class="container">
+    <h6 for="title"><b>${data.title} released in ${data._year_data}</b></h6>
+    <h6> Directed by ${data.director}. Starring: ${data.actors}. </h6>
+    <p> ${data.plot} </p>
+  </div>
+
+  </form>`;
+  $('#movieModal').find('form').remove();
+  $('#movieModal').append(output);
+
+  $('#movieModal').css('display', 'block');
+}
+
+/* <div class="container" style="background-color:#f1f1f1">
+<button type="button" onclick="document.getElementById('movieModal').style.display='none'" class="modalbtn cancelbtn">Cancel</button>
+</div> */
 
 function login() {
   return new Promise(function (resolve, reject) {

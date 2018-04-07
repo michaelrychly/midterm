@@ -1,7 +1,9 @@
 "use strict";
 const express = require('express');
 const router = express.Router();
-
+//imdb api
+require('dotenv').config();
+const imdb = require('imdb-api');
 //Luis dependencies
 const request = require('request');
 const querystring = require('querystring');
@@ -132,6 +134,28 @@ module.exports = (knex) => {
                 res.status(500).send(e);
             })
     })
+
+    //delete a user's item from the relation table users_items
+    //leaving the item on the items table to be reused
+    router.get('/:id/details', (req, res) => {
+        return knex('users_items')
+        .select("text_from_user")
+        .from("items")
+        .where({id: req.params.id})
+        .then(function(result) {
+                let text = result[0].text_from_user;
+                imdb.get(text, {apiKey: process.env.IMDB_KEY, timeout: 3000})
+                    .then(function (data) {
+                        res.status(200).send(data);
+                    })
+                    .catch(function (err){
+                        res.status(500).send(err);
+                    });
+            }).catch(function (e) {
+                res.status(500).send(e);
+            })
+    })
+
     return router;
 };
 
