@@ -86,7 +86,7 @@ $(document).ready(function () {
       e.stopImmediatePropagation();
       register().then(() => {
         $('#logoutBtn').on('click', function (e) {
-          location.reload();
+          logout();
         })
       })
     });
@@ -95,7 +95,7 @@ $(document).ready(function () {
       e.stopImmediatePropagation();
       login().then(() => {
         $('#logoutBtn').on('click', function (e) {
-          location.reload();
+          logout();
         })
       })
     });
@@ -138,6 +138,15 @@ function loadMovieModal(data) {
 /* <div class="container" style="background-color:#f1f1f1">
 <button type="button" onclick="document.getElementById('movieModal').style.display='none'" class="modalbtn cancelbtn">Cancel</button>
 </div> */
+function logout() {
+  $.ajax({
+    url: '/api/users/logout',
+    method: 'PUT',
+    success: ((res) =>{
+      location.reload();
+    })
+  })
+}
 
 function login() {
   return new Promise(function (resolve, reject) {
