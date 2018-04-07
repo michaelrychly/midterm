@@ -6,24 +6,18 @@ Our smart todo list is built on express server that handles requests and communi
 ### Prerequisites
 
 All prerequisite software except Node.js is included in the package.json provided. Simply 'npm install' before attempting to run the program.
-- body-parser
-- bootstrap
-- cookie-session
-- dotenv
-- ejs
-- express
-- imdb-api
-- knex
-- knex-logger
-- morgan
-- node-sass-middleware
-- pg
-- querystring
-- request
+- body-parser               - knex
+- bootstrap                 - knex-logger
+- cookie-session            - morgan
+- dotenv                    - node-sass-middleware
+- ejs                       - pg
+- express                   - querystring
+- imdb-api                  - request
 - nodemon
 
-### Getting Started
-Upon cloning this respository simply change your directory to the project file 'tweeter' and run the server/index.js file in node. Then navigate to http://localhost:8080/ in your browser.
+### Getting 
+
+Upon cloning this respository simply change your directory to the project folder 'midterm' and run the server.js file in node. Then navigate to http://localhost:8080/ in your browser.
 
 ```
 npm install
