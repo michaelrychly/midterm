@@ -2,7 +2,15 @@
 var currentTarget;
 var oldList;
 
-$(document).ready(function (e) {
+$(document).ready(function () {
+  $('body').click(function (e) {
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    if (!$(event.target).parents('section').length && !$(event.target).is('section')) {
+      $(".modal").css('display', '');
+    }
+  });
+
   $('.portfolio-item').on('click', function (e) {
     e.preventDefault();
     e.stopImmediatePropagation();
@@ -110,6 +118,7 @@ function loadDetails(id) {
 
 function loadMovieModal(data) {
   let output = `<form class="modal-content-movie animate updateForm">
+  <section class='modalContainer'>
   <div class="imgcontainer">
     <span onclick="document.getElementById('movieModal').style.display='none'" class="close" title="Close Modal">&times;</span>
     <img src=${data.poster} alt="Poster" class="poster">
@@ -119,7 +128,7 @@ function loadMovieModal(data) {
     <h6> Directed by ${data.director}. Starring: ${data.actors}. </h6>
     <p> ${data.plot} </p>
   </div>
-
+  </section>
   </form>`;
   $('#movieModal').find('form').remove();
   $('#movieModal').append(output);

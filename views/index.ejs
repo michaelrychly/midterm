@@ -129,6 +129,7 @@
 
   <div id="id01" class="modal">
       <form class="modal-content animate loginForm">
+      <section class='modalContainer'>
         <div class="imgcontainer">
           <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
           <img src="../img/img_avatar2.jpg" alt="Avatar" class="avatar">
@@ -147,12 +148,13 @@
         </br>
             <button type="button" onclick="document.getElementById('id01').style.display='none'" class="modalbtn cancelbtn">Cancel</button>
         </div>
-        
+        </section>
       </form>
     </div>
 
     <div id="id02" class="modal">
         <form class="modal-content-edit animate updateForm">
+        <section class ='modalContainer'>
           <div class="imgcontainer">
             <span onclick="document.getElementById('id02').style.display='none'" class="close" title="Close Modal">&times;</span>
             <i class="fa fa-edit modalEdit"></i>
@@ -173,6 +175,7 @@
               <button class="modalbtn" type="submit">Submit</button> 
               <button type="button" onclick="document.getElementById('id02').style.display='none'" class="modalbtn cancelbtn">Cancel</button>
           </div>
+          </section>
         </form>
       </div>
 

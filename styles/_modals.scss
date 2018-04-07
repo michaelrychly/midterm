@@ -68,6 +68,13 @@ span.psw {
 }
 
 /* Modal Content/Box */
+section.modalContainer {
+    margin: 0em;
+    padding: 0em;
+    background-color: $white;
+    border-radius: 2%;
+}
+
 .modal-content {
     background-color: #fefefe;
     margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
