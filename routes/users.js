@@ -1,22 +1,27 @@
 "use strict";
 
-const express = require('express');
-const router  = express.Router();
+const express       = require('express');
+const app           = express();
+const cookieSession = require("cookie-session");
+const router        = express.Router();
+
+const userModule = require('../usersHelper.js');
+app.use(cookieSession({
+  name: 'session',
+  keys: ['user_id']
+}));
 
 module.exports = (knex) => {
   //user login button
   router.put("/login", (req, res) => {
-    knex
-      .select('*')
-      .from('users')
-      .where({'name': req.body.username, 'password': req.body.password})
+    userModule.findUserWithPassword(req.body.username, req.body.password)
       .then((results) => {
-        console.log(results);
         //if not saved in user DB do not allow the user to continue
         //otherwise redirect
         if(results.length === 0){
           res.send([null, false]);
         } else{
+          res.cookie('user_id', req.body.username);
           res.send([req.body.username, true]);
         }
       })
@@ -28,29 +33,30 @@ module.exports = (knex) => {
   //user register
   router.put("/register", (req, res) => {
     //check if user is already exists
-    knex
-      .select('*')
-      .from('users')
-      .where({'name': req.body.username})
+    userModule.findUser(req.body.username)
       .then((result) => {
         //if not saved in user DB insert new user
         //otherwise redirect with the existing
         if(result.length === 0){
-          knex.insert([{'name': req.body.username,
-              'email': req.body.username + '@gmail.com',
-              'password': req.body.password}], 'id').into('users')
-            .then(function(id){
+          userModule.addUser(req.body.username, req.body.password)
+            .then(function(){
+              res.cookie('user_id', req.body.username);
               res.send([req.body.username, true]);
-               //res.transfer('/');
             })
         } else{
           res.send([null, false]);
           }
       })
       .catch(function(err){
-        console.log("in catch");
         console.error(err);
       });
+  });
+
+  //user logout
+  router.put("/logout", (req, res) => {
+    //delete the cookie session
+    res.clearCookie('user_id');
+    res.sendStatus(200);
   });
 
   return router;

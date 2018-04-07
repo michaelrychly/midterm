@@ -189,7 +189,7 @@ function login() {
       $.ajax({
         url: '/api/users/login',
         method: 'PUT',
-        data: { username: $('form').find('#username-field').val(), password: $('form').find('#password-field').val() },
+        data: { username: $('form').find('#username-field').val(), password: $('form').find('#password-field').val()},
         success: ((res) => {
           if (!res[1]) {
             alert('Unacceptable Username/Password')
