@@ -4,7 +4,6 @@ var oldList;
 
 $(document).ready(function () {
   $('body').click(function (e) {
-    e.preventDefault();
     e.stopImmediatePropagation();
     if (!$(event.target).parents('section').length && !$(event.target).is('section')) {
       $(".modal").css('display', '');
