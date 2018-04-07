@@ -41,6 +41,7 @@ module.exports = (knex) => {
               'password': req.body.password})
             .then(function(){
               res.send([req.body.username, true]);
+               //res.transfer('/');
             })
         } else{
           res.send(false);
