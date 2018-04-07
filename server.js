@@ -7,7 +7,6 @@ const ENV         = process.env.ENV || "development";
 const express     = require("express");
 const bodyParser  = require("body-parser");
 const sass        = require("node-sass-middleware");
-const cookieSession = require("cookie-session");
 const app         = express();
 
 const knexConfig  = require("./knexfile");
@@ -40,10 +39,6 @@ app.use("/styles", sass({
   outputStyle: 'expanded'
 }));
 app.use(express.static("public"));
-app.use(cookieSession({
-  name: 'session',
-  keys: ['user_id']
-}));
 
 // Mount all resource routes
 app.use("/api/users", usersRoutes(knex));

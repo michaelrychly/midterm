@@ -1,14 +1,20 @@
 "use strict";
-const express = require('express');
-const router = express.Router();
+const express          = require('express');
+const router           = express.Router();
+const app              = express();
 //imdb api
 require('dotenv').config();
-const imdb = require('imdb-api');
+const imdb             = require('imdb-api');
 //Luis dependencies
-const request = require('request');
-const querystring = require('querystring');
+const request          = require('request');
+const querystring      = require('querystring');
 const category_Promise = require('../luis/luis.js');
-const itemModule = require('../itemsHelper.js');
+const itemModule       = require('../itemsHelper.js');
+const cookieSession    = require("cookie-session");
+app.use(cookieSession({
+  name: 'session',
+  keys: ['user_id']
+}));
 
 const categories = ['movies/shows', 'restaurants', 'book', 'products', 'None']
 
@@ -107,6 +113,7 @@ module.exports = (knex) => {
     //delete a user's item from the relation table users_items
     //leaving the item on the items table to be reused
     router.delete('/:id', (req, res) => {
+        //console.log(req.cookies["user_id"]);
         itemModule.deleteItemRelation(2, req.params.id)
             .then(function() {
                 res.status(200).send(true);
@@ -115,13 +122,9 @@ module.exports = (knex) => {
             })
     })
 
-    //delete a user's item from the relation table users_items
-    //leaving the item on the items table to be reused
+    //get item details for movies
     router.get('/:id/details', (req, res) => {
-        return knex('users_items')
-        .select("text_from_user")
-        .from("items")
-        .where({id: req.params.id})
+        itemModule.findItemById(req.params.id)
         .then(function(result) {
                 let text = result[0].text_from_user;
                 imdb.get(text, {apiKey: process.env.IMDB_KEY, timeout: 3000})

@@ -1,9 +1,15 @@
 "use strict";
 
-const express = require('express');
-const router  = express.Router();
+const express       = require('express');
+const app           = express();
+const cookieSession = require("cookie-session");
+const router        = express.Router();
 
 const userModule = require('../usersHelper.js');
+app.use(cookieSession({
+  name: 'session',
+  keys: ['user_id']
+}));
 
 module.exports = (knex) => {
   //user login button
@@ -15,6 +21,7 @@ module.exports = (knex) => {
         if(results.length === 0){
           res.send([null, false]);
         } else{
+          res.cookie('user_id', req.body.username);
           res.send([req.body.username, true]);
         }
       })
@@ -33,6 +40,7 @@ module.exports = (knex) => {
         if(result.length === 0){
           userModule.addUser(req.body.username, req.body.password)
             .then(function(){
+              res.cookie('user_id', req.body.username);
               res.send([req.body.username, true]);
             })
         } else{
@@ -47,6 +55,7 @@ module.exports = (knex) => {
   //user logout
   router.put("/logout", (req, res) => {
     //delete the cookie session
+    res.clearCookie('user_id');
     res.sendStatus(200);
   });
 
