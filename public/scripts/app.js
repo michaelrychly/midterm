@@ -1,15 +1,42 @@
 "use strict"; // Start of use strict
+/*
+Created by: Jacob Maarse and Michael Rychly
+Date Created: April 4th, 2018
+Last Editted: April 7th, 2018
+Purpose: Midterm- Smart TODO List project for lighthouse labs
+Function: -Built on express server that handles requests and communication between data base and front-end
+          -SCSS and HTML styling to provide an aesthetic and functional web app
+          -The keystone piece of the project utilizes an AI's API ('Luis') to determine the category that a list
+          item should be put in. The API is queried and returns levels of confidence for each category, this data
+          is processed by the server and checks for a certain level of confidence in the top scoring category. If
+          it meets this threshold the suggested category is assigned otherwise the item becomes uncategorized which
+          can be edited by the user.
+          -List items are persisted through server restarts through the use of a database (postgres)
+          -Each list element has the ability to be deleted, editted, or 'completed' at the click of a button
+          -In addition to standard options a link was added which directs the user to a new tab suggesting a 
+          'call to action' for the user to complete their list item ex: showtimes near you for movies
+          -For movies in particular an imdb api was used to generate a movie poster/director/actors/plot details 
+          in the form of a pop up.
+          -Login/Register properly check if user exists or does not exist respectively. And the site tracks the user
+          through the use of a cookie on the server side.
+
+*/
+
 var currentTarget;
 var oldList;
 
 $(document).ready(function () {
+
+  //Watches for click outside of the modal so that it can close when that click occurs
   $('body').click(function (e) {
     e.stopImmediatePropagation();
     if (!$(event.target).parents('section').length && !$(event.target).is('section')) {
       $(".modal").css('display', '');
     }
   });
-
+  // Watches for button click on one of the major categories (which then generates the list), 
+  // this click also initializes listeners inside of the newly created list, such that all 
+  // the newly generated buttons are active
   $('.portfolio-item').on('click', function (e) {
     e.preventDefault();
     e.stopImmediatePropagation();
@@ -19,6 +46,7 @@ $(document).ready(function () {
       }, 500);
       $('.list-title-bar').off("click", slideList);
       $('.list-title-bar').click(function (e) {
+        //Check for edit button clicks which will load appropriate modal
         if ($(e.target).hasClass('fa-edit')) {
           // if the edit button is the target
           e.preventDefault();
@@ -32,7 +60,7 @@ $(document).ready(function () {
             updateItemText(currentTarget);
             currentTarget = null;
           });
-
+        //Check for delete button clicks  
         } else if ($(e.target).hasClass('fa-minus-square-o')) {
           // if the delete button is the target
           e.preventDefault();
@@ -40,7 +68,7 @@ $(document).ready(function () {
           // send request to delete
           let id = $(e.target).parent('li').attr('id');
           deleteItem(id);
-
+        //Check for state button clicks
         } else if ($(e.target).hasClass('fa-check-square-o')) {
           // if the target was the state button
           e.preventDefault();
@@ -49,16 +77,17 @@ $(document).ready(function () {
           let id = $(e.target).parent('li').attr('id');
           updateItemState(id);
           $('i .green').parent('li').appendTo('#catdList');
-
+        //Check for link button clicks
         } else if ($(e.target).hasClass('fa-link')) {
           e.stopImmediatePropagation();
-
+        //Check for text clicks (only initialized for movies list (class == 2))
         } else if (e.target.tagName == 'LI') {
           let id = $(e.target).attr('id');
           let targetClass = $(e.target).attr('class');
           if (targetClass == 2) {
             loadDetails(id); // targetClass);
           }
+        //If none of the other targets were clicked slide the list
         } else {
           e.preventDefault();
           e.stopImmediatePropagation();
@@ -70,6 +99,7 @@ $(document).ready(function () {
     })
   });
 
+  //Watches for new item being submitted
   $('#new-item-form').submit(function (e) {
     e.preventDefault();
     e.stopImmediatePropagation();
@@ -77,23 +107,28 @@ $(document).ready(function () {
     return false;
   });
 
+  //Watches for login button to be clicked on nav bar and creates appropriate modal
   $('#logRegBtn').on('click', function (e) {
     e.preventDefault();
     e.stopImmediatePropagation();
     $('#id01').css('display', 'block');
+    // watches for submit through the use of the register button
     $('#id01').find('button.register').on('click', function (e) {
       e.preventDefault();
       e.stopImmediatePropagation();
       register().then(() => {
+        //Creates listener for newly generated logout button
         $('#logoutBtn').on('click', function (e) {
           logout();
         })
       })
     });
+    // watches for submit through the use of the login button
     $('#id01').find('button.login').on('click', function (e) {
       e.preventDefault();
       e.stopImmediatePropagation();
       login().then(() => {
+        //Creates listener for newly generated logout button
         $('#logoutBtn').on('click', function (e) {
           logout();
         })
@@ -103,7 +138,8 @@ $(document).ready(function () {
 });
 
 var categories = ['foods', 'products', 'movies', 'books'];
-var urls = ['eat', 'buy', 'watch', 'read'];
+var intentOptions = ['eat', 'buy', 'watch', 'read'];
+var titles = ['Something To eat!', 'Something To Buy!', 'Something To Watch!', 'Something To Read!']
 
 function loadDetails(id) {
   $.ajax({
@@ -135,9 +171,6 @@ function loadMovieModal(data) {
   $('#movieModal').css('display', 'block');
 }
 
-/* <div class="container" style="background-color:#f1f1f1">
-<button type="button" onclick="document.getElementById('movieModal').style.display='none'" class="modalbtn cancelbtn">Cancel</button>
-</div> */
 function logout() {
   $.ajax({
     url: '/api/users/logout',
@@ -218,6 +251,11 @@ function loadNavBar(username) {
     $('nav').find('ul').append(output)
   }
 }
+function editModal(id) {
+  //get text from list id for placeholder in form
+  let placeHolder = $(`#${id}`).text();
+  $('#id02').find('input').attr("placeholder", `${placeHolder}`);
+}
 
 var shown = true;
 function slideList(list) {
@@ -230,12 +268,6 @@ function slideList(list) {
   } else {
     shown = true;
   }
-}
-
-function editModal(id) {
-  //get text from list id for placeholder in form
-  let placeHolder = $(`#${id}`).text();
-  $('#id02').find('input').attr("placeholder", `${placeHolder}`);
 }
 
 function addItem(form) {
@@ -319,7 +351,7 @@ function clearAndLoadList(btn) {
     let index
     for (let i = 0; i < categories.length; i++) {
       if ($(btn).hasClass(categories[i])) {
-        btnIntent = urls[i];
+        btnIntent = intentOptions[i];
         index = i;
         break;
       }
@@ -363,7 +395,6 @@ function createItem(item, list, cat) {
   $(`#${list}`).prepend(output);
 }
 
-var titles = ['Something To eat!', 'Something To Buy!', 'Something To Watch!', 'Something To Read!']
 //Creates the title bar for the uncategorized list and then calls createItems for all items given, inside of the newly created list
 function renderList(items, list, cat) {
   if (list === 'noneList') {
