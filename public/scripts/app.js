@@ -96,6 +96,7 @@ function login() {
         } else {
           // location = location;
           removeNavBar();
+          $('#id01').css('display', '');
           loadNavBar(res[0]);
         }
       })
@@ -117,6 +118,7 @@ function register() {
         } else {
           //location = location;
           removeNavBar();
+          $('#id01').css('display', '');
           loadNavBar(res[0]);
 
         }
@@ -126,13 +128,13 @@ function register() {
 }
 
 function removeNavBar() {
-  $('nav').find('ul').remove('li')
+  $('nav').find('li').remove()
 }
 function loadNavBar(username) {
   if (username) {
     let output = `<li class="nav-item mx-0 mx-lg-1">
           <a id="username" class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger">${username}</a>
-        </li>` `<li class="nav-item mx-0 mx-lg-1">
+        </li><li class="nav-item mx-0 mx-lg-1">
         <a id="logoutBtn" class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger">Logout</a>
       </li>`;
     $('nav').find('ul').append(output)
@@ -210,8 +212,12 @@ function updateItemText(id) {
         console.log('in empty text')
         $(`li#${id}`).remove();
       } else if ($('form').find('#catDropDown').val() == 0) {
-        console.log('output: ', output)
-        $(`li#${id}`).text(output)
+        let content = $(`li#${id}`).contents()
+        content[0] = output;
+        $(`li#${id}`).contents().remove();
+        for (let i = 0; i < content.length; i ++) {
+          $(`li#${id}`).append(content[i]);
+        }
       } else {
         console.log('in else')
         $(`li#${id}`).val($('form').find('#item-update-field').val())

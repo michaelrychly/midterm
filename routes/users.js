@@ -14,8 +14,8 @@ module.exports = (knex) => {
         console.log(results);
         //if not saved in user DB do not allow the user to continue
         //otherwise redirect
-        if(result.length === 0){
-          res.send(false);
+        if(results.length === 0){
+          res.send([null, false]);
         } else{
           res.send([req.body.username, true]);
         }
@@ -44,7 +44,7 @@ module.exports = (knex) => {
                //res.transfer('/');
             })
         } else{
-          res.send(false);
+          res.send([null, false]);
           }
       })
       .catch(function(err){
