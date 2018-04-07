@@ -1,29 +1,46 @@
-# Node Skeleton
+# Midterm Smart TODO List Project by Michael Rychly and Jacob Maarse
 
-## Project Setup
+Our smart todo list is built on express server that handles requests and communication between data base and front-end. SCSS and HTML were used for styling to provide an aesthetic and functional web app. The cornerstone piece of the project utilizes an AI's API ('Luis') to determine the category that a list item should be put in. The API is queried and returns levels of confidence for each category, this data is processed by the server and checks for a certain level of confidence in the top scoring category. If it meets this threshold the suggested category is assigned otherwise the item becomes uncategorized which can be edited by the user. List items are persisted through server restarts through the use of a database (postgres). Each list element has the ability to be deleted, editted, or 'completed' at the click of a button. In addition to standard options a link was added which directs the user to a new tab suggesting a 'call to action' for the user to complete their list item ex: showtimes near you for movies. For movies in particular an imdb api was used to generate a movie poster/director/actors/plot details in the form of a pop up. Login/Register properly check if user exists or does not exist respectively. And the site tracks the user through the use of a cookie on the server side.
 
-1. Create your own empty repo on GitHub
-2. Clone this repository (do not fork)
-  - Suggestion: When cloning, specify a different folder name that is relevant to your project
-3. Remove the git remote: `git remote rm origin`
-4. Add a remote for your origin: `git remote add origin <your github repo URL>`
-5. Push to the new origin: `git push -u origin master`
-6. Verify that the skeleton code now shows up in your repo on GitHub
+### Prerequisites
 
-## Getting Started
+All prerequisite software except Node.js is included in the package.json provided. Simply 'npm install' before attempting to run the program.
+- body-parser
+- bootstrap
+- cookie-session
+- dotenv
+- ejs
+- express
+- imdb-api
+- knex
+- knex-logger
+- morgan
+- node-sass-middleware
+- pg
+- querystring
+- request
+- nodemon
 
-1. Create the `.env` by using `.env.example` as a reference: `cp .env.example .env`
-2. Update the .env file with your correct local information
-3. Install dependencies: `npm i`
-4. Fix to binaries for sass: `npm rebuild node-sass`
-5. Run migrations: `npm run knex migrate:latest`
-  - Check the migrations folder to see what gets created in the DB
-6. Run the seed: `npm run knex seed:run`
-  - Check the seeds file to see what gets seeded in the DB
-7. Run the server: `npm run local`
-8. Visit `http://localhost:8080/`
+### Getting Started
+Upon cloning this respository simply change your directory to the project file 'tweeter' and run the server/index.js file in node. Then navigate to http://localhost:8080/ in your browser.
 
-## Dependencies
+```
+npm install
+```
+```
+node server.js
+```
+### Final Product
 
-- Node 5.10.x or above
-- NPM 3.8.x or above
+A brief overview of the layout of the page:
+#### The Landing
+!["Screenshot of the landing view"]()
+
+#### Lists
+!["Screenshot of the lists dropped"]()
+
+#### Login
+!["Screenshot of the login modal"]()
+
+#### Movie details (click on text of list item in movie list)
+!["Screenshot of the movie details modal"]()
