@@ -24,6 +24,7 @@ module.exports = (knex) => {
         console.error(err);
       });
   });
+
   //user register
   router.put("/register", (req, res) => {
     //check if user is already exists
@@ -35,11 +36,10 @@ module.exports = (knex) => {
         //if not saved in user DB insert new user
         //otherwise redirect with the existing
         if(result.length === 0){
-          knex('users')
-            .insert({'name': req.body.username,
+          knex.insert([{'name': req.body.username,
               'email': req.body.username + '@gmail.com',
-              'password': req.body.password})
-            .then(function(){
+              'password': req.body.password}], 'id').into('users')
+            .then(function(id){
               res.send([req.body.username, true]);
                //res.transfer('/');
             })

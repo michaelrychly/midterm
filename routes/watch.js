@@ -11,7 +11,7 @@ module.exports = (knex) => {
       .from('users')
       .innerJoin('users_items', 'users.id', 'user_id')
       .innerJoin('items', 'items.id', 'item_id')
-      .where('users.id', '2')
+      .where('users.id', 2)
       .whereIn('items.category_id', ['1', '5'])
       .orderBy('state', 'desc')
       .then((watch) => {
