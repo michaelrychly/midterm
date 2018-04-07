@@ -34,13 +34,13 @@ node server.js
 
 A brief overview of the layout of the page:
 #### The Landing
-!["Screenshot of the landing view"]()
+!["Screenshot of the landing view"](https://github.com/michaelrychly/midterm/blob/master/docs/Screen%20Shot%202018-04-07%20at%203.46.46%20PM.png?raw=true)
 
 #### Lists
-!["Screenshot of the lists dropped"]()
+!["Screenshot of the lists dropped"](https://github.com/michaelrychly/midterm/blob/master/docs/Screen%20Shot%202018-04-07%20at%203.47.04%20PM.png?raw=true)
 
 #### Login
-!["Screenshot of the login modal"]()
+!["Screenshot of the login modal"](https://github.com/michaelrychly/midterm/blob/master/docs/Screen%20Shot%202018-04-07%20at%203.47.17%20PM.png?raw=true)
 
 #### Movie details (click on text of list item in movie list)
-!["Screenshot of the movie details modal"]()
+!["Screenshot of the movie details modal"](https://github.com/michaelrychly/midterm/blob/master/docs/Screen%20Shot%202018-04-07%20at%203.48.17%20PM.png?raw=true)
