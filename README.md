@@ -1,7 +1,10 @@
 # Midterm Smart TODO List Project 
-## By: Michael Rychly and Jacob Maarse
 
 Our Smart TODO?TADA! List is built on an express server that handles requests and communication between the database and front-end. SCSS and HTML were used for styling to provide an aesthetic and intuitive web app. The cornerstone piece of the project utilizes an AI's ('Luis') API to determine the category that a list item should be put in. The API is queried and returns levels of confidence for each category, this data is processed by the server and checks for a certain level of confidence in the top scoring category. If it meets this threshold the suggested category is assigned otherwise the item becomes uncategorized which can be edited by the user. List items are persisted through server restarts through the use of a database (postgres). Each list element has the ability to be deleted, editted, or 'completed' at the click of a button. In addition to standard options, a link was added which directs the user to a new tab suggesting a 'call to action' for the user to complete their list item ex: showtimes near you for movies. For movies in particular the imdb api was queried to generate a movie poster/director/actors/plot details in the form of a pop up. Login/Register properly check if user exists or does not exist respectively. And the site tracks the user session through the use of a cookie.
+
+## Main contributors
+[Jacob Maarse](https://github.com/maarsej), 
+[Michael Rychly](https://github.com/michaelrychly) 
 
 ### Prerequisites
 
